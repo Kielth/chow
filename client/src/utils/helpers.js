@@ -19,6 +19,7 @@ export function idbPromise(storeName, method, object) {
   return new Promise((resolve, reject) => {
     const request = window.indexedDB.open('rescue-chow', 1);
     let db, tx, store;
+    
     request.onupgradeneeded = function(e) {
       const db = request.result;
       db.createObjectStore('products', { keyPath: '_id' });
