@@ -35,7 +35,7 @@ const resolvers = {
         const price = await stripe.prices.create({
           product: product.id,
           unit_amount: prodLines[i].price * 100,
-          currency: 'usd',
+          currency: 'cad',
         });  
         // add price id to the line items array
         line_items.push({
@@ -46,6 +46,33 @@ const resolvers = {
       }
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
+        shipping_address_collection: {
+          allowed_countries: ['CA'],
+        },
+        shipping_options: [
+          {
+            shipping_rate_data: {
+              type: 'fixed_amount',
+              fixed_amount: {
+                amount: 0,
+                currency: 'cad',
+              },
+              display_name: 'Free shipping',
+              // Delivers between 5-7 business days
+              delivery_estimate: {
+                minimum: {
+                  unit: 'business_day',
+                  value: 5,
+                },
+                maximum: {
+                  unit: 'business_day',
+                  value: 7,
+                },
+              }
+            }
+          },          
+        ],
+        
         line_items,
         mode: 'payment',
         success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -70,6 +97,7 @@ const resolvers = {
 
       return await Product.find(params).populate('category');
     },
+    
     product: async (parent, { _id }) => {
       return await Product.findById(_id).populate('category');
     },
@@ -80,16 +108,35 @@ const resolvers = {
           populate: 'prodId'
         });
 
-        user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
-
-        return user;
+       
+  
+          user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
+  
+          return user;
       }
 
       throw new AuthenticationError('Not logged in');
+      
     },
+
+    userOrderHistory: async (parent, args, context) => {
+      if (true) { //context.user
+        const user = await User.findById("636043205df01268619e419e").populate({ //context.user
+          path: 'orders.products',
+          populate: 'prodId'
+        });
+          user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
+  
+          return user;
+      }
+
+      throw new AuthenticationError('Not logged in');
+      
+    },
+
     order: async (parent, { _id }, context) => {
       if (context.user) {
-        const user = await User.findById(context.user._id).populate({
+        const user = await User.findById("context.user._id").populate({
           path: 'orders.products',
           populate: 'category'
         });
@@ -98,7 +145,20 @@ const resolvers = {
       }
     
       throw new AuthenticationError('Not logged in');
-    }
+    },
+
+    rescues: async () => {
+      
+      return await Rescues.find();
+    },
+
+    // thoughts: async (parent, { username }) => {
+    //   const params = username ? { username } : {};
+    //   return Thought.find(params).sort({ createdAt: -1 });
+    // },
+    // thought: async (parent, { _id }) => {
+    //   return Thought.findOne({ _id });
+    // }
   },
   Mutation: {
     addUser: async (parent, args) => {
@@ -108,7 +168,8 @@ const resolvers = {
       return { token, user };
     },
 
-    addNewOrder: async (parent, {products}, context) => {
+    addNewOrder: async (parent, {products, rescue}, context) => {
+      console.log(rescue);
       const productsArray = [];
       products.forEach(item => {
         const newLine = new ItemLine(item);
@@ -116,7 +177,7 @@ const resolvers = {
       });
       let order = new Orders();
       order.products = productsArray;
-      // console.log(order.products);
+      order.rescue = rescue;
       await User.findByIdAndUpdate(context.user._id, { $push: { orders: order } });
       return order;
     },
@@ -163,7 +224,35 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    }
+    },
+    // addThought: async (parent, args, context) => {
+    //   if (context.user) {
+    //     const thought = await Thought.create({ ...args, username: context.user.username });
+
+    //     await User.findByIdAndUpdate(
+    //       { _id: context.user._id },
+    //       { $push: { thoughts: thought._id } },
+    //       { new: true }
+    //     );
+
+    //     return thought;
+    //   }
+
+    //   throw new AuthenticationError('You need to be logged in!');
+    // },
+    // addReaction: async (parent, { thoughtId, reactionBody }, context) => {
+    //   if (context.user) {
+    //     const updatedThought = await Thought.findOneAndUpdate(
+    //       { _id: thoughtId },
+    //       { $push: { reactions: { reactionBody, username: context.user.username } } },
+    //       { new: true, runValidators: true }
+    //     );
+
+    //     return updatedThought;
+    //   }
+
+    //   throw new AuthenticationError('You need to be logged in!');
+    // },
   }
 };
       

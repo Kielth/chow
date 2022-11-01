@@ -2,6 +2,7 @@ import React from "react";
 import ProductList from "../components/shopping/ProductList";
 import CategoryMenu from "../components/shopping/CategoryMenu";
 import Cart from "../components/shopping/Cart";
+import RescueSelector from "../components/shopping/RescueSelector";
 
 const OrderNow = () => {
     return (
@@ -9,6 +10,7 @@ const OrderNow = () => {
             <h2>Order Now</h2>
             <div className="container">
             <CategoryMenu />
+            <RescueSelector />
             <ProductList />
             <Cart />
             </div>

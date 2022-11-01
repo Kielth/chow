@@ -8,7 +8,12 @@ const orderSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  products: [ItemLine.schema]
+  products: [ItemLine.schema],
+  rescue: {
+    type: Schema.Types.ObjectId,
+    ref: 'Rescues'
+    
+  }
 });
 
 const Orders = mongoose.model('Orders', orderSchema);

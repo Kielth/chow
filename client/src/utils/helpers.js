@@ -25,6 +25,8 @@ export function idbPromise(storeName, method, object) {
       db.createObjectStore('products', { keyPath: '_id' });
       db.createObjectStore('categories', { keyPath: '_id' });
       db.createObjectStore('cart', { keyPath: '_id' });
+      db.createObjectStore('rescue', {keyPath: '_id'}); // <--- KEY PATH MAY BE THE PROBLEM
+      db.createObjectStore('rescues', {keyPath: '_id'});
     };
 
     request.onerror = function(e) {

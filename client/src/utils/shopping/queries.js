@@ -68,3 +68,46 @@ export const QUERY_USER = gql`
     }
   }
 `;
+
+export const QUERY_USER_ORDER_HISTORY = gql`
+  query UserOrderHistory {
+    userOrderHistory {
+      _id
+      firstName
+      lastName
+      email
+      orders {
+        _id
+        purchaseDate
+        products {
+          prodId {
+            _id
+            name
+            description
+            image
+            quantity
+            price
+            category {
+              _id
+              name
+            }
+          }
+          qnty
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_RESCUES = gql`
+query getRescues {
+  rescues {
+    _id
+    name
+    website
+    amountOwed
+  }
+}
+`;
+
+

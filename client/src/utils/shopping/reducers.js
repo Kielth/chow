@@ -8,7 +8,9 @@ import {
   UPDATE_CATEGORIES,
   UPDATE_CURRENT_CATEGORY,
   CLEAR_CART,
-  TOGGLE_CART
+  TOGGLE_CART,
+  UPDATE_RESCUE,
+  UPDATE_RESCUES,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -78,7 +80,24 @@ export const reducer = (state, action) => {
       return {
         ...state,
         currentCategory: action.currentCategory
-      }
+      };
+
+    case UPDATE_RESCUE:
+      
+      let newRescue = state.rescue.filter(rescue => {
+        return action.rescue._id ;
+      });
+
+      return {
+        ...state,
+        rescue: newRescue
+      };
+
+      case UPDATE_RESCUES:
+      return {
+        ...state,
+        rescues: [...action.rescues],
+      };
 
     default:
       return state;

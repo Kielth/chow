@@ -12,8 +12,8 @@ export const LOGIN = gql`
 `;
 
 export const ADD_NEW_ORDER = gql`
-mutation AddNewOrder($products: [LineItem]) {
-  addNewOrder(products: $products) {
+mutation AddNewOrder($products: [LineItem], $rescue: ID) {
+  addNewOrder(products: $products, rescue: $rescue) {
     _id
     purchaseDate
     products {

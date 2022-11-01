@@ -19,36 +19,36 @@ db.once('open', async () => {
     {
       name: 'Kitty Kisses 60g',
       description:
-        '1 calorie Liver Kitty Treats made in Canada with omega 3s and organic catnip, Kitty Kisses will earn you kitty kisses any day!',
-      image: 'Kitty Kisses.png',
+        'Delicious, semisoft, 100% Canadian, seafood catnip cat treats, your cat will love!',
+      image: 'Kitty-Kisses-300x400.jpg',
       category: categories[0]._id,
       price: 9.99,
       quantity: 1
     },
     {
-      name: 'Beef Chews 100g',
+      name: 'Beef Bark Chews 100g',
       description:
-        'No additives No Preservatives, Beef Chews made in Canada with fresh Canadian Beef, Beef Chews are a longer chew for teeth and activity.',
-      image: 'Beef Chews.png',
+        'Healthy, Natural, Human Grade, 100% Canadian Dehydrated Dog Chew. Mouth-watering Lasting chew that can be give as a reward or activity anytime.',
+      image: 'Beef-Chews-300x400.jpg',
       category: categories[1]._id,
       price: 10.99,
       quantity: 1
     },
     {
-      name: 'Chicken Chunks 100g',
+      name: 'Beef Liver Treats 180g',
       description:
-        'No additives No Preservatives, Chicken morsels made in Canada with Canadian Chicken, low fat, pocket friendly, easy treat for a reward or just to say I love you!',
-      image: 'Chicken Chunks.png',
+        'Healthy, Rich in Iron, Breakable, Human grade, 100% Canadian Dehydrated Dog Treats -Great for training, as small little pieces can be broken off and given as a reward or daily treat.',
+      image: 'Dried-Beef-Liver-300x400.jpg',
       category: categories[1]._id,
       price: 9.99,
       quantity: 1
     },
     {
-      name: 'Beef Bites 90g',
+      name: 'Beef Treats 90g',
       category: categories[1]._id,
       description:
-        'No additives No Preservatives, Beef Bites made in Canada with fresh Canadian beef, low fat, pocket friendly, breakable for small dogs and training',
-      image: 'Beef Bites.png',
+        'Healthy, Low Fat, Breakable, Human grade, 100% Canadian Dehydrated Dog Treats -A popular treat that is said to be a dog’s very favourite.',
+      image: 'Dried-Beef-Bites-300x400.jpg',
       price: 9.99,
       quantity: 1
     },
@@ -56,26 +56,7 @@ db.once('open', async () => {
 
   console.log('products seeded');
 
-  await User.deleteMany();
-
-  await User.create({
-    firstName: 'Pamela',
-    lastName: 'Washington',
-    email: 'pamela@testmail.com',
-    password: 'password12345',
-    orders: [
-      {
-        products: [products[0]._id, products[0]._id, products[1]._id]
-      }
-    ]
-  });
-
-  await User.create({
-    firstName: 'Elijah',
-    lastName: 'Holt',
-    email: 'eholt@testmail.com',
-    password: 'password12345'
-  });
+ 
 
   console.log('users seeded');
 
